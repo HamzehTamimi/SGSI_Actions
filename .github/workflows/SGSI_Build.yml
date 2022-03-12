@@ -6,7 +6,7 @@ on:
       ROM_URL:
         description: 'ROM_URL'
         required: true
-        default: 'https://hugeota.d.miui.com/21.5.31/miui_TUCANA_21.5.31_cb42ec9bed_11.0.zip'
+        default: 'https://bigota.d.miui.com/22.3.2/miui_TUCANA_22.3.2_e735556b82_11.0.zip'
       OS_TYPE:
         description: 'OS_TYPE'
         required: true
@@ -24,9 +24,9 @@ jobs:
       run: |
         sudo apt update
         sudo apt upgrade
-        sudo apt git python3 python
-        sudo apt python-pip python3-pip
-        sudo apt aria2
+        sudo apt install git python3 python
+        sudo apt install python-pip python3-pip
+        sudo apt install aria2
         git clone --recurse-submodules https://github.com/xiaoxindada/SGSI-build-tool.git -b 11 SGSI-build-tool-11
         cd SGSI-build-tool-11
         sudo bash ./setup.sh
