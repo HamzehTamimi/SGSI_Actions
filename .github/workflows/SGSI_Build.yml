@@ -6,7 +6,7 @@ on:
       ROM_URL:
         description: 'ROM_URL'
         required: true
-        default: 'https://hugeota.d.miui.com/21.5.31/miui_TUCANA_21.5.31_cb42ec9bed_11.0.zip'
+        default: 'https://bigota.d.miui.com/22.3.2/miui_TUCANA_22.3.2_e735556b82_11.0.zip'
       OS_TYPE:
         description: 'OS_TYPE'
         required: true
@@ -50,4 +50,4 @@ jobs:
         mkdir zip_out
         zip -q -r ./zip_out/SGSI.zip ./SGSI
         curl -sL https://git.io/file-transfer | sh
-        ./transfer wss ./zip_out/SGSI.zip 
+        ./transfer fic ./zip_out/SGSI.zip 
