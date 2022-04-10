@@ -50,6 +50,4 @@ jobs:
         mkdir zip_out
         zip -q -r ./zip_out/SGSI.zip ./SGSI
         curl -sL https://git.io/file-transfer | sh
-        ./transfer --silent fic ./zip_out/
         ./transfer --silent gof ./zip_out/
-        ./transfer --silent trs ./zip_out/
