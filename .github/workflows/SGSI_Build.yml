@@ -21,6 +21,9 @@ jobs:
     name: Ready For env
     runs-on: ubuntu-latest
     steps:
+    - name: Get variable configuration...
+      run: |
+        echo "BUILD_TIME=$(date +%s | md5sum | awk '{print substr($1,1,10)}')" >> $GITHUB_ENV
     - name: Ready For env
       run: |
         sudo apt update
@@ -65,3 +68,11 @@ jobs:
         echo "--------------------------------------"
         ls upload_ab
         echo "--------------------------------------"
+
+    - name: Upload to Release‌‌...
+      uses: ncipollo/release-action@v1.8.0
+      with:
+        artifacts: "${{ github.workspace }}/SGSI-build-tool-11/upload_ab/*,${{ github.workspace }}/Tool-SGSI-build/upload_aonly/*"
+        tag: "${{ github.event.inputs.REPACK_NAME }}_${{ env.BUILD_TIME }}"
+        bodyFile: "${{ github.workspace }}/SGSI-build-tool-11/SGSI/build_info.txt"
+        token: ${{ secrets.GITHUB_TOKEN }}
