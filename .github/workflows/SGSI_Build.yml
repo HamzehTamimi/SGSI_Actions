@@ -41,7 +41,6 @@ jobs:
         mkdir tmp
         cd tmp
         aria2c -x 16 --check-certificate=false ${{ github.event.inputs.ROM_URL }}
-
     - name: Start Build
       run: |
         cd ${{ github.workspace }}/SGSI-build-tool-11/
