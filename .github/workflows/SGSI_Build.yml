@@ -26,8 +26,7 @@ jobs:
         echo "BUILD_TIME=$(date +%s | md5sum | awk '{print substr($1,1,10)}')" >> $GITHUB_ENV
     - name: Ready For env
       run: |
-        sudo apt update
-        sudo apt upgrade
+        sudo apt update -y
         sudo apt install git python3 python
         sudo apt install aria2
         git clone --recurse-submodules https://github.com/xiaoxindada/SGSI-build-tool.git -b 11 SGSI-build-tool-11
