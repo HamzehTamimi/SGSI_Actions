@@ -18,20 +18,15 @@ on:
 
 jobs:
   sgsi:
-    name: SGSI
+    name: Ready For env
     runs-on: ubuntu-latest
     steps:
-    - name: 签出
-      uses: actions/checkout@v3
-      with:
-        repository: xiaoxindada/SGSI-build-tool
-        ref: '11'
-        path: SGSI-build-tool-11
-
     - name: Ready For env
       run: |
-        sudo apt update -y
-        sudo apt install python3 python aria2
+        sudo apt update
+        sudo apt install git python3 python
+        sudo apt install aria2
+        git clone --recurse-submodules https://github.com/xiaoxindada/SGSI-build-tool.git -b 11 SGSI-build-tool-11
         cd SGSI-build-tool-11
         sudo bash ./setup.sh
         
@@ -41,6 +36,7 @@ jobs:
         mkdir tmp
         cd tmp
         aria2c -x 16 --check-certificate=false ${{ github.event.inputs.ROM_URL }}
+
     - name: Start Build
       run: |
         cd ${{ github.workspace }}/SGSI-build-tool-11/
