@@ -54,10 +54,10 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/SGSI-build-tool-11/
         pwd
-        zip -r AB_${{ github.event.inputs.REPACK_NAME }}.zip SGSI/*
+        zip -r $GITHUB_WORKSPACE/SGSI-build-tool-11/AB_${{ github.event.inputs.REPACK_NAME }}.zip $GITHUB_WORKSPACE/SGSI-build-tool-11/SGSI/*
 
     - name: Upload
       run: |
         cd $GITHUB_WORKSPACE/SGSI-build-tool-11/
         curl -sL https://git.io/file-transfer | sh 
-        ./transfer muse AB_${{ github.event.inputs.REPACK_NAME }}
+        ./transfer muse $GITHUB_WORKSPACE/SGSI-build-tool-11/AB_${{ github.event.inputs.REPACK_NAME }}.zip
