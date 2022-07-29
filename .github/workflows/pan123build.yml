@@ -28,6 +28,7 @@ jobs:
       run: |
         sudo apt update -y
         sudo apt install git python3 python
+        pip3 install requests urllib3
         sudo apt install aria2
         git clone --recurse-submodules https://github.com/xiaoxindada/SGSI-build-tool.git -b 11 SGSI-build-tool-11
         cd SGSI-build-tool-11
