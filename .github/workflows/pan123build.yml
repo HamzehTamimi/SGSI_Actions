@@ -1,0 +1,69 @@
+name: "Build SGSI UPDATE TO 123PAN"
+
+on:
+  workflow_dispatch:
+    inputs:
+      ROM_URL:
+        description: 'ROM_URL'
+        required: true
+        default: 'https://bigota.d.miui.com/22.3.2/miui_TUCANA_22.3.2_e735556b82_11.0.zip'
+      OS_TYPE:
+        description: 'OS_TYPE'
+        required: true
+        default: 'miui'
+      REPACK_NAME:
+        description: 'REPACK_NAME'
+        required: true
+        default: 'SGSI.zip'
+
+jobs:
+  sgsi:
+    name: Ready For env
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get variable configuration...
+      run: |
+        echo "BUILD_TIME=$(date +%s | md5sum | awk '{print substr($1,1,10)}')" >> $GITHUB_ENV
+    - name: Ready For env
+      run: |
+        sudo apt update -y
+        sudo apt install git python3 python
+        sudo apt install aria2
+        git clone --recurse-submodules https://github.com/xiaoxindada/SGSI-build-tool.git -b 11 SGSI-build-tool-11
+        cd SGSI-build-tool-11
+        sudo bash ./setup.sh
+        
+    - name: Download ROM
+      run: |
+        cd ${{ github.workspace }}/SGSI-build-tool-11/
+        mkdir tmp
+        cd tmp
+        aria2c -x 16 --check-certificate=false ${{ github.event.inputs.ROM_URL }}
+
+    - name: Start Build
+      run: |
+        cd ${{ github.workspace }}/SGSI-build-tool-11/
+        sudo bash ./make.sh AB << EOF
+
+        n
+        n
+        ${{ github.event.inputs.OS_TYPE }}
+        y
+
+    - name: Packing(AB)...
+      run: |
+        cd $GITHUB_WORKSPACE/SGSI-build-tool-11/
+        pwd
+        zip -r $GITHUB_WORKSPACE/SGSI-build-tool-11/AB_${{ github.event.inputs.REPACK_NAME }}.zip $GITHUB_WORKSPACE/SGSI-build-tool-11/SGSI/*
+    
+    - name: 签出编译器
+      uses: actions/checkout@v3
+      with:
+        repository: PPKunOfficial/Pan123Python
+        path: pan123
+
+    - name: Upload
+      run: |
+        cd $GITHUB_WORKSPACE/pan123/
+        python3 main.py ${{ secrets.PAN123USER }} ${{ secrets.PAN123PWD }} $GITHUB_WORKSPACE/SGSI-build-tool-11/AB_${{ github.event.inputs.REPACK_NAME }}.zip
+
